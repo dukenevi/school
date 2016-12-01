@@ -8,7 +8,7 @@
 const PI=3.14;
 
 //PI=10; выводит ошибку
-if (defined(PI)==false){
+if (defined('PI')!=false){
     echo "вывод константы Пи=", PI;
 }
 else
