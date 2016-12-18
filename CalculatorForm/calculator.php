@@ -1,72 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="calculator.css">
+    <title>Calculator</title>
+</head>
+<body>
+
 <?php
-/**
- * Created by PhpStorm.
- * User: dukenevi
- * Date: 12.12.16
- * Time: 17:28
- */
+// function calculate
+// $fistValue, $secondValue - arguments
+// $symbol - operation
+// $errors - array of error
+function calculate($firstValue, $secondValue, $symbol, &$errors)
+{
+    switch ($symbol)
+    {
+        case "+":
+            $result = $firstValue + $secondValue;
+            break;
+        case "-":
+            $result = $firstValue - $secondValue;
+            break;
+        case "*":
+            $result = $firstValue * $secondValue;
+            break;
+        case "/":
+            if ($secondValue == 0)
+            {
+                $errors["secondValue"] = 'ERROR, division by zero';
+                $errors["symbol"] = 'ERROR, division by zero';
+                $result = 'ERROR';
+                break;
+            }
+            $result = $firstValue / $secondValue;
+            break;
+        default:
+            $errors["symbol"] = 'ERROR operation';
+    }
+    return $result;
+};
+// function of receiving values from an global array
+function getValue($value)
+{
+    if (!isset($_POST[$value]))
+    {
+         return false;
+    }
+    return $_POST[$value];
+};
+// function validation values
+function validate($value, $valueName, &$errors)
+{
+    if (preg_match('/^(\-){0,1}[\d]+(\.){0,1}[\d]*$/', $value))
+    {
+        return floatval($value);
+    }
+    elseif (preg_match('/^(\-){0,1}[\d]*$/', $value))
+    {
+        return intVal($value);
+    }
+    else
+    {
+        $errors[$valueName] = 'ERROR, wrong value' . $valueName;
+        return false;
+    }
+};
+//  calculator body
+    $firstValue = validate(getValue('firstValue'), 'firstValue', $errors);
+    $secondValue = validate(getValue('secondValue'), 'firstValue', $errors);
+    $symbol = getValue('symbol');
+    $result = calculate($firstValue, $secondValue, $symbol, $errors);
+?>
 
-$arg1;
-$arg2;
-$operation;
-$result;
-//начальные значения для формы
-if (!isset($_POST['arg1']))
-{
-    $arg1 =0;
-}
-if (!isset($_POST['arg2']))
-{
-    $arg2 =0;
-}
-if (!isset($_POST['operation']))
-{
-    $operation ="+";
-}
-
-/*
-if (!isset($_POST['arg1']))
-{
-    $arg1 =0;
-}
-*/
-
-$formCal = <<<FORM
     <form action= "calculator.php" method ="post">
-        <p> аргумент 1 => <input type ="text" name ="arg1" value = "$arg1" /></p>
-        <p> аргумент 2 => <input type ="text" name ="arg2" value = "$arg2" /></p>
-        <p> операция   => <input type ="text" name ="operation" value = "$operation" /></p>
-        <p> <input type ="submit" /> </p>
+        <div class="one"<?= !$errors[$firstValue] ? 'is_error' : '' ?> >
+            <label> First argument value </label>
+            <input type ="text" name ="firstValue"  placeholder= 'Input first value' value = "<?=$firstValue ?>" />
+        </div>
+        <div class="one"<?= !$errors[$firstValue] ? 'is_error' : '' ?> >
+            <label> Second argument value </label>
+            <input type ="text" name ="secondValue" placeholder= 'Input second value' value = "<?=$secondValue ?>" />
+        </div>
+        <div class="one">
+            <label> Select operation </label>
+            <label>
+                <select name="symbol" value = "<?=$symbol ?>" />
+                    <option value="+">+</option>
+                    <option value="-">-</option>
+                    <option value="*">*</option>
+                    <option value="/">/</option>
+                </select>
+            </label>
+        </div>
+        <div class="one" >
+            <label>result of the calculation </label>
+            <input type ="text" readonly name ="result" value = "<?=$result ?>" />
+        </div>
+        <div class="one">
+            <input type ="reset" value="Reset"/>
+            <input type ="submit" value="Calculate"/>
+        </div>
     </form>
-FORM;
+<?php
+    if ($errors != null)
+    {
+        echo '<div class="error_msg" >';
+            foreach ($errors as $key => $value)
+            {
+                echo "<p>". $value."</p>";
+            };
+        echo '</div>';
+    }
+?>
+</body>
+</html>
 
-echo $formCal;
-
-//calculator
-$arg1 = $_POST[arg1];
-echo $arg1;
-$arg2 = $_POST[arg2];
-echo $arg2;
-$operation = $_POST[operation];
-echo $operation;
-switch ($operation)
-{
-    case "+":
-        $result = $arg1 + $arg2;
-        break;
-    case "-":
-        $result = $arg1 - $arg2;
-        break;
-    case "*":
-        $result = $arg1 * $arg2;
-        break;
-    case "/":
-        $result = $arg1 / $arg2;
-        break;
-    default:
-        $result= "<p> error operation </p>";
-}
-
-
-echo "<p> результат  => $result </p>";
-echo  "<a href='calculator.php'> Reset </a>";
