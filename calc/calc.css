@@ -1,0 +1,47 @@
+* {
+    box-sizing:border-box;
+}
+form, .error_msg {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 500px;
+    border: .1rem solid #000;
+    color:#000;
+    margin: auto;
+    padding: 10px;
+    font: 1.5rem Arial;
+}
+input[type="text"]{
+    width: 45%;
+    height: 32px;
+    border:.1rem solid #000;
+    display: block;
+    font: 1.2rem Arial;
+}
+.one
+{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    width: 100%;
+    margin: 0 0 20px 0;
+    padding: 5px;
+}
+.is_error
+{
+    border: .1rem solid red;
+}
+.error_msg
+{
+    background-color: grey;
+    border-color: red;
+}
+.error_msg p
+{
+    width: 100%;
+    height: 32px;
+    border:.1rem solid #000;
+    display: block;
+    font: 1.5rem Arial;
+}
