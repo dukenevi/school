@@ -26,8 +26,8 @@ function calculate($firstValue, $secondValue, $symbol, &$errors)
         case "/":
             if ($secondValue == 0)
             {
-                $errors["secondValue"] = 'ERROR, division by zero';
-                $errors["symbol"] = 'ERROR, division by zero';
+                $errors["secondValue"] = 'ERROR, division by zero (second Value)';
+                $errors["symbol"] = 'ERROR, division by zero (division symbol)';
                 $result = 'ERROR';
                 break;
             }

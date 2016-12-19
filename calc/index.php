@@ -3,8 +3,17 @@
 
 <head>
     <meta charset="UTF-8">
+    <title>Calculator v.2.0</title>
+<!-- bootstrap include>
+    <!-- compiled CSS -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- compiled JavaScript -->
+    <script src="../js/bootstrap.min.js"></script>
+
     <link rel="stylesheet" href="calc.css">
-    <title>Calculator</title>
+
 </head>
 <body>
 
@@ -21,50 +30,53 @@ include_once 'validation.php';
 
 //  calculator body
 $firstValue = validate(getValue('firstValue'), 'firstValue', $errors);
-$secondValue = validate(getValue('secondValue'), 'firstValue', $errors);
+$secondValue = validate(getValue('secondValue'), 'secondValue', $errors);
 $symbol = getSymbol('symbol');
 $result = calculate($firstValue, $secondValue, $symbol, $errors);
 ?>
 
-<form action= "index.php" method ="post">
-    <div class="one"<?= !$errors[$firstValue] ? 'is_error' : '' ?> >
-        <label> First argument value </label>
-        <input type ="text" name ="firstValue"  placeholder= 'Input first value' value = "<?=$firstValue ?>" />
+<main class="container calculator">
+    <h1 class="text-center">Calculator v.2.0</h1>
+
+    <form class="calc_form" action= "index.php" method ="post">
+         <div class="flex_box has-success">
+             <p class="text-primary calc_p" >First argument value</p>
+             <input type ="text" class="calc_input" name ="firstValue"  placeholder= 'Input first value' value = "<?=$firstValue ?>" />
+         </div>
+         <div class="flex_box has-success">
+             <p class="text-primary calc_p">Second argument value</p>
+             <input type ="text" class="calc_input" name ="secondValue" placeholder= 'Input second value' value = "<?=$secondValue ?>" />
+         </div>
+         <div class="flex_box">
+              <p class="text-primary calc_p">Select operation</p>
+              <select name="symbol" value = "<?=$symbol ?>" />
+                 <option value="+">+</option>
+                 <option value="-">-</option>
+                 <option value="*">*</option>
+                 <option value="/">/</option>
+              </select>
+         </div>
+         <div class="flex_box">
+              <p class="text-primary calc_p">result of the calculation</p>
+              <input type ="text" class="calc_input" readonly name ="result" value = "<?=$result ?>" />
+         </div>
+         <div class="flex_box">
+             <input class="btn btn-info " type ="reset" value="Reset"/>
+             <input class="btn btn-success" type ="submit" value="Calculate"/>
+         </div>
+    </form>
+    <div class="error_form has-error">
+        <?php
+            foreach ($errors as $key => $value)
+            {
+                if ($value != 'true')
+                {
+                    echo '<input type ="text" class="form-control" readonly value = ">'. $value.'" />';
+                }
+            };
+        ?>
     </div>
-    <div class="one"<?= !$errors[$firstValue] ? 'is_error' : '' ?> >
-        <label> Second argument value </label>
-        <input type ="text" name ="secondValue" placeholder= 'Input second value' value = "<?=$secondValue ?>" />
-    </div>
-    <div class="one">
-        <label> Select operation </label>
-        <label>
-            <select name="symbol" value = "<?=$symbol ?>" />
-            <option value="+">+</option>
-            <option value="-">-</option>
-            <option value="*">*</option>
-            <option value="/">/</option>
-            </select>
-        </label>
-    </div>
-    <div class="one" >
-        <label>result of the calculation </label>
-        <input type ="text" readonly name ="result" value = "<?=$result ?>" />
-    </div>
-    <div class="one">
-        <input type ="reset" value="Reset"/>
-        <input type ="submit" value="Calculate"/>
-    </div>
-</form>
-<?php
-if ($errors != null)
-{
-    echo '<div class="error_msg" >';
-    foreach ($errors as $key => $value)
-    {
-        echo "<p>". $value."</p>";
-    };
-    echo '</div>';
-}
-?>
+    <div class="row"></div>
+</main>
 </body>
 </html>
