@@ -1,0 +1,19 @@
+.flex_box
+{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: auto;
+    width: 100%;
+}
+.file_box
+{
+    border: solid .5rem grey;
+    border-radius: .5rem;
+}
+textarea
+{
+    border: solid .5rem grey;
+    border-radius: .5rem;
+    height: 550px;
+}
